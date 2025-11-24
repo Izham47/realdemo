@@ -1,10 +1,12 @@
 package com.example.demo;
 
+import javafx.scene.control.Alert.AlertType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -55,14 +57,21 @@ public class NewTaskController {
         allTasks.add(newTask);
         saveAllTasks(allTasks);
 
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("New task is added!");
+        alert.showAndWait();
+
         Stage stage = (Stage) buttonSave.getScene().getWindow();
         stage.close();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("myGUI.fxml")); // open home scrreen back after add a new task
-        Scene scene = new Scene(fxmlLoader.load(), 1500, 900);
-        stage.setTitle("To DO List!");
-        stage.setScene(scene);
-        stage.show();
+        Stage newTaskStage=new Stage();
+        Parent root= FXMLLoader.load(getClass().getResource("ViewAllTask.fxml"));
+        newTaskStage.setTitle(" All Task");
+        newTaskStage.setScene(new Scene(root, 1900, 1000));
+        newTaskStage.show();
+
 
     }
 

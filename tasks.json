@@ -21,7 +21,7 @@
     "dueDate": "2025-11-14",
     "category": "Other",
     "priority": 2,
-    "completed": false
+    "completed": true
   },
   {
     "title": "facs",
@@ -29,6 +29,54 @@
     "dueDate": "2025-11-15",
     "category": "Health",
     "priority": 3,
+    "completed": true
+  },
+  {
+    "title": "WOI",
+    "description": "kiki",
+    "dueDate": "2025-11-21",
+    "category": "Health",
+    "priority": 3,
+    "completed": false
+  },
+  {
+    "title": "awsnalsknd",
+    "description": "sajdnajk",
+    "dueDate": "2025-11-20",
+    "category": "Other",
+    "priority": 2,
+    "completed": false
+  },
+  {
+    "title": "hbh",
+    "description": "fsda",
+    "dueDate": "2025-11-14",
+    "category": "Finance",
+    "priority": 2,
+    "completed": false
+  },
+  {
+    "title": "scsasca",
+    "description": "ac",
+    "dueDate": "2025-11-28",
+    "category": "Work",
+    "priority": 1,
+    "completed": false
+  },
+  {
+    "title": "tabung",
+    "description": "ssca",
+    "dueDate": "2025-11-23",
+    "category": "Finance",
+    "priority": 5,
+    "completed": false
+  },
+  {
+    "title": "csca",
+    "description": "acssa",
+    "dueDate": "2025-11-29",
+    "category": "Finance",
+    "priority": 2,
     "completed": false
   }
 ]

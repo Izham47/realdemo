@@ -27,6 +27,8 @@ public class EditTaskController {
     private final String FILE_PATH = "tasks.json";
     private int taskIndex = -1;
 
+    private boolean taskStatus = false;
+
     @FXML
     public void initialize() {
         if (editCategoryField != null)
@@ -37,7 +39,7 @@ public class EditTaskController {
 
     public void getTaskData(ToDo task, int index){
         this.taskIndex = index;
-
+        this.taskStatus = task.getCompleted();
         editTitleField.setText(task.getTitle());
         editDescField.setText(task.getDescription());
         editCategoryField.setValue(task.getCategory());
@@ -55,11 +57,18 @@ public class EditTaskController {
                 editCategoryField.getValue(),
                 editPriorityField.getValue());
 
+        updatedTask.setCompleted(this.taskStatus);
         List<ToDo> allTasks = loadTasks();
 
         if(taskIndex >= 0 && taskIndex < allTasks.size()){
             allTasks.set(taskIndex,updatedTask);
             saveAllTasks(allTasks);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Task is edited!");
+            alert.showAndWait(); // Waits for user to click OK
         }
         closeAndReturn();
     }
@@ -96,6 +105,7 @@ public class EditTaskController {
             mainStage.show();
         } catch (IOException error) {
             error.printStackTrace();
- }
+        }
+    }
 }
-}
+

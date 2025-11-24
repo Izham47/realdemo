@@ -1,29 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane minWidth="-Infinity" prefHeight="646.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ViewTaskController">
-   <children>
-      <TableView fx:id="table" editable="true" layoutX="1.0" layoutY="96.0" prefHeight="394.0" prefWidth="737.0">
-        <columns>
-          <TableColumn fx:id="titlecolumn" prefWidth="112.0" text="TITLE" />
-          <TableColumn fx:id="descriptioncolumn" minWidth="0.0" prefWidth="144.0" text="DESCRIPTION" />
-            <TableColumn fx:id="duedatecolumn" prefWidth="115.0" text="DUE DATE" />
-            <TableColumn fx:id="categorycolumn" prefWidth="126.0" text="CATEGORY" />
-            <TableColumn fx:id="prioritycolumn" prefWidth="106.0" text="PRIORITY" />
-            <TableColumn fx:id="completedcolumn" prefWidth="133.0" text="COMPLETION STATUS" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="738.0" style="-fx-background-color: #1F252B;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ViewTaskController">
+    <children>
+        <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="738.0" style="-fx-background-color: #EAE8E4;">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#clearAllTasks" text="Clear" />
+                        <MenuItem mnemonicParsing="false" onAction="#Exit_App" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="About">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleFAQ" text="FAQ" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleCredit" text="Credit" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
 
-        </columns>
-      </TableView>
-      <Label layoutX="14.0" layoutY="34.0" prefHeight="23.0" prefWidth="46.0" text="Search" />
-      <TextField fx:id="searchfield" layoutX="60.0" layoutY="33.0" text="Enter a keyword" />
-      <Button fx:id="searchbutton" layoutX="234.0" layoutY="33.0" mnemonicParsing="false" text="OK" />
-       <Button alignment="BOTTOM_CENTER" layoutX="338.0" layoutY="531.0" mnemonicParsing="false" onAction="#clickingEdit" text="Edit Task"/>
+        <Label layoutX="14.0" layoutY="47.0" prefHeight="23.0" prefWidth="46.0" text="Search" textFill="WHITE" />
+        <TextField fx:id="searchfield" layoutX="60.0" layoutY="46.0" prefHeight="26.0" prefWidth="143.0" promptText="Enter a keyword" />
+        <Button fx:id="searchbutton" layoutX="210.0" layoutY="46.0" mnemonicParsing="false" text="OK" />
 
-   </children>
+        <Label layoutX="409.0" layoutY="51.0" text="Filter By:" textFill="WHITE" />
+        <ComboBox fx:id="filterType" layoutX="465.0" layoutY="46.0" prefHeight="26.0" prefWidth="181.0" promptText="Type" />
+
+        <Label layoutX="510.0" layoutY="51.0" text="Value:" textFill="WHITE" />
+        <ComboBox fx:id="filterValue" disable="true" layoutX="465.0" layoutY="46.0" prefHeight="26.0" prefWidth="181.0" promptText="Select Value" />
+
+        <Button layoutX="672.0" layoutY="47.0" mnemonicParsing="false" onAction="#resetFilter" text="Reset" />
+
+        <TableView fx:id="table" editable="true" layoutX="1.0" layoutY="90.0" prefHeight="430.0" prefWidth="737.0" style="-fx-background-color: #EAE8E4;">
+            <columns>
+                <TableColumn fx:id="titlecolumn" prefWidth="153.6" text="Title" />
+                <TableColumn fx:id="descriptioncolumn" minWidth="0.0" prefWidth="236.8" text="Description" />
+                <TableColumn fx:id="duedatecolumn" prefWidth="122.4" text="Due Date" />
+                <TableColumn fx:id="categorycolumn" prefWidth="96.8" text="Category" />
+                <TableColumn fx:id="prioritycolumn" prefWidth="52.8" text="Priority" />
+                <TableColumn fx:id="completedcolumn" prefWidth="73.6" text="Checkmark" />
+            </columns>
+        </TableView>
+
+        <Button fx:id="editbutton" alignment="BOTTOM_CENTER" layoutX="93.0" layoutY="543.0" mnemonicParsing="false" onAction="#clickingEdit" prefHeight="26.0" prefWidth="234.0" style="-fx-background-color: #658CBB;" text="Edit Task" textFill="WHITE">
+            <font>
+                <Font name="Felix Titling" size="12.0" />
+            </font>
+        </Button>
+
+        <Button layoutX="409.0" layoutY="543.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="234.0" style="-fx-background-color: #658CBB;" text="Delete Task" textFill="WHITE">
+            <font>
+                <Font name="Felix Titling" size="12.0" />
+            </font>
+        </Button>
+
+    </children>
 </AnchorPane>
