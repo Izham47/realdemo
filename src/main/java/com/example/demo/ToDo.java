@@ -33,6 +33,7 @@ public class ToDo {
 
 
 
+    // constructor when an object is created
     public ToDo (String title, String description,LocalDate dueDate,String  category,Integer priority) {
 
         this.title = title;
@@ -44,10 +45,12 @@ public class ToDo {
 
     }
 
+    // Getter for completed status
     public Boolean isCompleted() {
         return completed;
     }
 
+    // Setter for completed status
     public void setCompleted(Boolean completed) {
         this.completed = completed;
     }

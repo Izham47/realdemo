@@ -30,16 +30,18 @@ public class BasicController {
     @FXML
     private Button clearButton;
 
+    @FXML
     public void go_back() throws IOException {
         Stage stage = (Stage) GoBackButton.getScene().getWindow();
         stage.close();
-        Stage primaryStage = new Stage();
+        Stage Primarystage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Add Contact");
-        primaryStage.setScene(new Scene(root,1900, 1000));
-        primaryStage.show();
+        Primarystage.setTitle("Add Contact");
+        Primarystage.setScene(new Scene(root,1900, 1000));
+        Primarystage.show();
     }
 
+    @FXML
     public void Exit_App() {
         Stage stage = (Stage) QuitButton.getScene().getWindow();
         stage.close();
@@ -51,22 +53,22 @@ public class BasicController {
     public void add_task() throws IOException {
         Stage stage=(Stage) addButton.getScene().getWindow();
         stage.close();
-        Stage newTaskStage=new Stage();
+        Stage addTaskStage =new Stage();
         Parent root= FXMLLoader.load(getClass().getResource("NewTask.fxml"));
-        newTaskStage.setTitle("Add New Task");
-        newTaskStage.setScene(new Scene(root, 1900, 1000));
-        newTaskStage.show();
+        addTaskStage.setTitle("Add New Task");
+        addTaskStage.setScene(new Scene(root, 1900, 1000));
+        addTaskStage.show();
 
     }
 
     public void view_task() throws IOException {
         Stage stage=(Stage) viewButton.getScene().getWindow();
         stage.close();
-        Stage newTaskStage=new Stage();
+        Stage viewTaskStage =new Stage();
         Parent root= FXMLLoader.load(getClass().getResource("ViewAllTask.fxml"));
-        newTaskStage.setTitle(" All Task");
-        newTaskStage.setScene(new Scene(root, 1900, 1000));
-        newTaskStage.show();
+        viewTaskStage.setTitle(" All Task");
+        viewTaskStage.setScene(new Scene(root, 1900, 1000));
+        viewTaskStage.show();
 
     }
 

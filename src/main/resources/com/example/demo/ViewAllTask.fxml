@@ -19,7 +19,7 @@
                 <Menu mnemonicParsing="false" text="File">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#clearAllTasks" text="Clear" />
-                        <MenuItem mnemonicParsing="false" onAction="#Exit_App" text="Exit" />
+                        <MenuItem mnemonicParsing="false" onAction="#MainMenu" text="Main Menu" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="About">
@@ -60,7 +60,7 @@
             </font>
         </Button>
 
-        <Button layoutX="409.0" layoutY="543.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="234.0" style="-fx-background-color: #658CBB;" text="Delete Task" textFill="WHITE">
+        <Button layoutX="409.0" layoutY="543.0" mnemonicParsing="false" onAction="#clickingDelete" prefHeight="26.0" prefWidth="234.0" style="-fx-background-color: #658CBB;" text="Delete Task" textFill="WHITE">
             <font>
                 <Font name="Felix Titling" size="12.0" />
             </font>

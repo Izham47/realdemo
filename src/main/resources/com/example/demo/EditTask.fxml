@@ -8,26 +8,41 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.EditTaskController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="730.0" style="-fx-background-color: #1F252B;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.EditTaskController">
     <children>
-        <Label layoutX="203.0" layoutY="24.0" prefHeight="49.0" prefWidth="325.0" text="EDIT TASK">
+        <Label layoutX="203.0" layoutY="24.0" prefHeight="49.0" prefWidth="325.0" text="EDIT TASK" textFill="WHITE">
             <font>
-                <Font name="System Bold Italic" size="33.0" />
+                <Font name="Felix Titling" size="33.0" />
             </font>
         </Label>
-        <Label layoutX="113.0" layoutY="105.0" text="TITLE:" />
-        <Label layoutX="90.0" layoutY="173.0" text="DESCRIPTION:" />
-        <Label layoutX="100.0" layoutY="243.0" text="DUE DATE:" />
-        <Label layoutX="98.0" layoutY="315.0" text="CATEGORY:" />
-        <Label layoutX="102.0" layoutY="387.0" text="PRIORITY:" />
+        <Label layoutX="90.0" layoutY="107.0" prefHeight="14.0" prefWidth="73.0" text="TITLE:" textFill="WHITE">
+            <font>
+                <Font name="Footlight MT Light" size="13.0" />
+            </font></Label>
+        <Label layoutX="90.0" layoutY="173.0" prefHeight="14.0" prefWidth="85.0" text="DESCRIPTION:" textFill="WHITE">
+            <font>
+                <Font name="Footlight MT Light" size="13.0" />
+            </font></Label>
+        <Label layoutX="90.0" layoutY="245.0" prefHeight="14.0" prefWidth="73.0" text="DUE DATE:" textFill="WHITE">
+            <font>
+                <Font name="Footlight MT Light" size="13.0" />
+            </font></Label>
+        <Label layoutX="90.0" layoutY="317.0" prefHeight="14.0" prefWidth="73.0" text="CATEGORY:" textFill="WHITE">
+            <font>
+                <Font name="Footlight MT Light" size="13.0" />
+            </font></Label>
+        <Label layoutX="90.0" layoutY="389.0" prefHeight="14.0" prefWidth="73.0" text="PRIORITY:" textFill="WHITE">
+            <font>
+                <Font name="Footlight MT Light" size="13.0" />
+            </font></Label>
 
-        <TextField fx:id="editTitleField" layoutX="203.0" layoutY="101.0" prefHeight="25.0" prefWidth="174.0" />
-        <TextField fx:id="editDescField" layoutX="203.0" layoutY="169.0" prefHeight="25.0" prefWidth="174.0" />
-        <DatePicker fx:id="editDueDateField" layoutX="203.0" layoutY="239.0" />
-        <ComboBox fx:id="editCategoryField" layoutX="202.0" layoutY="311.0" prefHeight="25.0" prefWidth="174.0" />
-        <ComboBox fx:id="editPriorityField" layoutX="202.0" layoutY="383.0" prefHeight="25.0" prefWidth="180.0" />
+        <TextField fx:id="editTitleField" layoutX="203.0" layoutY="101.0" prefHeight="25.0" prefWidth="268.0" />
+        <TextField fx:id="editDescField" layoutX="203.0" layoutY="169.0" prefHeight="25.0" prefWidth="268.0" />
+        <DatePicker fx:id="editDueDateField" layoutX="203.0" layoutY="239.0" prefHeight="25.0" prefWidth="268.0" />
+        <ComboBox fx:id="editCategoryField" layoutX="202.0" layoutY="311.0" prefHeight="25.0" prefWidth="268.0" />
+        <ComboBox fx:id="editPriorityField" layoutX="202.0" layoutY="383.0" prefHeight="25.0" prefWidth="268.0" />
 
-        <Button fx:id="buttonEdit" onAction="#buttonEdit" layoutX="610.0" layoutY="448.0" mnemonicParsing="false" style="-fx-background-color: lightblue;" text="UPDATE"> <font>
+        <Button fx:id="buttonEdit" layoutX="223.0" layoutY="450.0" mnemonicParsing="false" onAction="#buttonEdit" prefHeight="31.0" prefWidth="202.0" style="-fx-background-color: lightblue;" text="UPDATE"> <font>
             <Font size="15.0" />
         </font>
         </Button>

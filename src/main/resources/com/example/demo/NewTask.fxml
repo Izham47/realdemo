@@ -46,5 +46,10 @@
             <Font name="Felix Titling" size="15.0" />
         </font>
         </Button>
+      <Button fx:id="goBackButton" layoutX="77.0" layoutY="446.0" mnemonicParsing="false" onAction="#goBackToMain" prefHeight="17.0" prefWidth="106.0" style="-fx-background-color: lightgreen;" text="Go Back">
+         <font>
+            <Font name="Felix Titling" size="15.0" />
+         </font>
+      </Button>
     </children>
 </Pane>

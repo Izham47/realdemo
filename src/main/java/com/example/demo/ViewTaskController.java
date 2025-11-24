@@ -25,30 +25,33 @@ import java.util.List;
 
 public class ViewTaskController {
 
-    @FXML private TableView<ToDo> table;
-    @FXML private TableColumn<ToDo, String> titlecolumn;
-    @FXML private TableColumn<ToDo, String> descriptioncolumn;
-    @FXML private TableColumn<ToDo, LocalDate> duedatecolumn;
-    @FXML private TableColumn<ToDo, String> categorycolumn;
-    @FXML private TableColumn<ToDo, Integer> prioritycolumn;
-    @FXML private TableColumn<ToDo, Boolean> completedcolumn;
-    @FXML private TextField searchfield;
-    @FXML private Button searchbutton;
-    @FXML
-    private MenuItem exitbutton;
-    @FXML private ComboBox<String> filterType;
-    @FXML private ComboBox<String> filterValue;
+    // JavaFX UI Components from FXML
+    @FXML private TableView<ToDo> table;                // Table to display tasks
+    @FXML private TableColumn<ToDo, String> titlecolumn;      // Column for task title
+    @FXML private TableColumn<ToDo, String> descriptioncolumn; // Column for task description
+    @FXML private TableColumn<ToDo, LocalDate> duedatecolumn;  // Column for due date
+    @FXML private TableColumn<ToDo, String> categorycolumn;    // Column for category
+    @FXML private TableColumn<ToDo, Integer> prioritycolumn;   // Column for priority
+    @FXML private TableColumn<ToDo, Boolean> completedcolumn;  // Column with checkbox for completion
+    @FXML private TextField searchfield;                    // Field to enter search keyword
+    @FXML private Button searchbutton;                      // Button to trigger search
+    @FXML private ComboBox<String> filterType;             // Dropdown to select type of filter
+    @FXML private ComboBox<String> filterValue;            // Dropdown to select filter value
 
-
+    // Path to JSON file storing tasks
     private final String FILE_PATH = "tasks.json";
 
-    // Class-level variables so they can be accessed by all methods
+    // Observable list for the whole list of tasks
     private ObservableList<ToDo> allTasks;
+
+    // Filtered list for applying search and filter
     private FilteredList<ToDo> filteredData;
 
+    // Automatically called to initialize after FXML is loaded
     @FXML
-    public void initialize() {
-        // 1. Setup Columns
+    public void initialize() throws IOException {
+
+        // Setup Table Columns
         titlecolumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptioncolumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         duedatecolumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
@@ -56,71 +59,95 @@ public class ViewTaskController {
         prioritycolumn.setCellValueFactory(new PropertyValueFactory<>("priority"));
         completedcolumn.setCellValueFactory(new PropertyValueFactory<>("completed"));
 
-        // 2. CheckBox Cell Factory
+
+        //  Add CheckBox in Completed Column
+
         completedcolumn.setCellFactory(column -> new TableCell<ToDo, Boolean>() {
             private final CheckBox checkBox = new CheckBox();
 
             {
+                // When the checkbox is clicked, update the task's 'completed' status and save immediately
                 checkBox.setOnAction(event -> {
                     if (getTableRow() != null && getTableView().getItems().size() > getIndex()) {
                         ToDo todo = getTableView().getItems().get(getIndex());
-                        todo.setCompleted(checkBox.isSelected());
-                        saveTasks();
+                        todo.setCompleted(checkBox.isSelected()); // Update object
+                        try {
+                            saveTasks(); // Save changes to JSON file
+                        } catch (IOException e) {
+                            e.printStackTrace(); // Print error to console for debugging
+                        }
                     }
                 });
             }
 
             @Override
             protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
+                super.updateItem(item, empty); // Call superclass method to maintain default behavior
+
+                // If this cell is empty or has no data (the row is deleted or uninitialized), remove the checkbox
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    checkBox.setSelected(item);
-                    setGraphic(checkBox);
+                    checkBox.setSelected(item); // Reflect the task's completed status
+                    setGraphic(checkBox);       // Display checkbox in the cell
                 }
             }
         });
 
-        // 3. Load Data
+
+        // Load tasks from file into memory
+
         allTasks = FXCollections.observableArrayList(loadCurrentTasks());
 
-        // 4. Initialize FilteredList (Class-level variable)
+
+        // Initialize FilteredList for search/filter functionality
+
         filteredData = new FilteredList<>(allTasks, p -> true);
 
-        // 5. Initialize Filter Logic
+
+        // Setup ComboBox options
+
         if (filterType != null) {
-            filterType.getItems().addAll("None", "Category", "Priority", "Status");
+            filterType.getItems().addAll("None", "Category", "Priority", "Status"); // Types of filter
             filterType.valueProperty().addListener((obs, oldVal, newVal) -> {
-                updateFilterOptions(newVal);
-                updateTableFilter();
+                updateFilterOptions(newVal); // Update available options when type changes
+                updateTableFilter();         // Refresh table immediately
             });
         }
 
+
+
+
+        //Whenever the user changes the selection in the second filter ComboBox (filterValue), automatically update the task list in the table to reflect the new filter
         if (filterValue != null) {
             filterValue.valueProperty().addListener((obs, oldVal, newVal) -> updateTableFilter());
         }
 
-        // 6. Search Button Logic (Calls the master filter method)
+
+        // Setup search button to update filtered table
+
         searchbutton.setOnAction(event -> updateTableFilter());
 
-        // 7. Bind SortedList to Table
+        // Enable column sorting
+
         SortedList<ToDo> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(table.comparatorProperty());
-        table.setItems(sortedData);
+        sortedData.comparatorProperty().bind(table.comparatorProperty()); // Bind comparator to table
+        table.setItems(sortedData); // Display sorted and filtered tasks
     }
 
+    // Update available filter values based on selected filter type
     private void updateFilterOptions(String type) {
         filterValue.getItems().clear();
         filterValue.setValue(null);
 
         if (type == null || "None".equals(type)) {
-            filterValue.setDisable(true);
+            filterValue.setDisable(true); // Disable if no filtering
             return;
         }
 
         filterValue.setDisable(false);
 
+        // Give Options dropdown based on filter type
         switch (type) {
             case "Category":
                 filterValue.getItems().addAll("Work", "Personal", "Health", "Finance", "Other");
@@ -134,20 +161,19 @@ public class ViewTaskController {
         }
     }
 
+    // Apply search keyword and filters to TableView
     private void updateTableFilter() {
         String keyword = searchfield.getText().toLowerCase();
         String type = (filterType != null) ? filterType.getValue() : "None";
         String value = (filterValue != null) ? filterValue.getValue() : null;
 
         filteredData.setPredicate(todo -> {
-            // 1. Check Keyword
-            boolean matchKeyword = true;
-            if (keyword != null && !keyword.isEmpty()) {
-                matchKeyword = todo.getTitle().toLowerCase().contains(keyword) ||
-                        todo.getDescription().toLowerCase().contains(keyword);
-            }
+            // Check keyword match in title or description
+            boolean matchKeyword = keyword == null || keyword.isEmpty() ||
+                    todo.getTitle().toLowerCase().contains(keyword) ||
+                    todo.getDescription().toLowerCase().contains(keyword);
 
-            // 2. Check Specific Filter
+            // Check specific filter criteria
             boolean matchCriterion = true;
             if (type != null && value != null && !"None".equals(type)) {
                 switch (type) {
@@ -155,29 +181,27 @@ public class ViewTaskController {
                         matchCriterion = todo.getCategory().equalsIgnoreCase(value);
                         break;
                     case "Priority":
-                        try {
-                            int pVal = Integer.parseInt(value);
-                            matchCriterion = (todo.getPriority() == pVal);
-                        } catch (NumberFormatException e) { matchCriterion = false; }
+                        matchCriterion = todo.getPriority() == Integer.parseInt(value);
                         break;
                     case "Status":
-                        boolean isDone = todo.isCompleted();
-                        if ("Completed".equals(value)) matchCriterion = isDone;
-                        else if ("Pending".equals(value)) matchCriterion = !isDone;
+                        matchCriterion = "Completed".equals(value) ? todo.isCompleted() : !todo.isCompleted();
                         break;
                 }
             }
 
+            // Return true if task matches both keyword and filter criteria
             return matchKeyword && matchCriterion;
         });
     }
 
+
+    // Edit task
+
     @FXML
     public void clickingEdit() throws IOException {
         ToDo selectTask = table.getSelectionModel().getSelectedItem();
-        int selectIndex = table.getSelectionModel().getSelectedIndex();
 
-        if (selectTask == null) {
+        if (selectTask == null) { // If no task selected, show warning
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setHeaderText("Select a task");
@@ -185,31 +209,30 @@ public class ViewTaskController {
             return;
         }
 
+        int masterIndex = allTasks.indexOf(selectTask); // Get index in master list (allTasks)
 
-            // We must get the index from the MASTER list (allTasks), not the filtered table
-            int masterIndex = allTasks.indexOf(selectTask);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("EditTask.fxml"));
+        Parent root = loader.load();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditTask.fxml"));
-            Parent root = loader.load();
+        EditTaskController controller = loader.getController();
+        controller.getTaskData(selectTask, masterIndex);
 
-            EditTaskController controller = loader.getController();
-            controller.getTaskData(selectTask, masterIndex);
+        Stage stage = new Stage();
+        stage.setTitle("Edit Task");
+        stage.setScene(new Scene(root));
+        stage.show();
 
-            Stage stage = new Stage();
-            stage.setTitle("Edit Task");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            ((Stage) table.getScene().getWindow()).close();
-
+        ((Stage) table.getScene().getWindow()).close(); // Close current window
     }
 
+
+    // Delete task
+
     @FXML
-    public void clickingDelete() {
-        // 1. Get Selected Item
+    public void clickingDelete() throws IOException {
         ToDo selectTask = table.getSelectionModel().getSelectedItem();
 
-        if (selectTask == null) {
+        if (selectTask == null) { // If no task selected, show warning
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setHeaderText("Select a task");
@@ -218,6 +241,7 @@ public class ViewTaskController {
             return;
         }
 
+        // Ask for confirmation before deleting
         Alert confirm = new Alert(AlertType.CONFIRMATION);
         confirm.setTitle("Confirm Delete");
         confirm.setHeaderText(null);
@@ -225,29 +249,30 @@ public class ViewTaskController {
 
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            allTasks.remove(selectTask);
-            saveTasks();
+            allTasks.remove(selectTask); // Remove from memory
+            saveTasks();                 // Save updated list to JSON
 
+            // Inform the user
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setHeaderText(null);
             alert.setContentText("Task is deleted!");
             alert.showAndWait();
-}
-}
+        }
+    }
 
-
+    // Reset search and filter
     @FXML
     public void resetFilter() {
         searchfield.clear();
         if (filterType != null) filterType.setValue("None");
         if (filterValue != null) filterValue.setValue(null);
-
     }
 
+    // Show FAQ dialog
     @FXML
     public void handleFAQ() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("FAQ");
         alert.setHeaderText("Frequently Asked Questions");
         alert.setContentText(
@@ -259,9 +284,10 @@ public class ViewTaskController {
         alert.showAndWait();
     }
 
+    // Show credits dialog
     @FXML
     public void handleCredit() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About Us");
         alert.setHeaderText("Smart ToDo List App");
         alert.setContentText(
@@ -270,52 +296,56 @@ public class ViewTaskController {
                         "Course: CAT201 - Integrated Software Development Workshop\n" +
                         "Universiti Sains Malaysia"
         );
-        alert.showAndWait();}
-
-
-        public void Exit_App() {
-        Stage stage = (Stage) table.getScene().getWindow();
-        stage.close();
+        alert.showAndWait();
     }
 
+    // Return to Main Menu
+    public void MainMenu() throws IOException {
+
+        Stage currentStage = (Stage) table.getScene().getWindow();
+        currentStage.close(); // Close the current 'View All Tasks' window
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));  // Load the Main Menu FXML
+        Parent root = loader.load();
+        Stage mainStage = new Stage();
+        mainStage.setTitle("TO DO LIST");
+        mainStage.setScene(new Scene(root));
+        mainStage.show(); //Show the Main Menu window
+    }
+
+    // Clear all tasks after confirmation
     @FXML
-    public void clearAllTasks() {
-        // 1. Create a Confirmation Alert
+    public void clearAllTasks() throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Clear");
         alert.setHeaderText("Clear All Data");
         alert.setContentText("Are you sure you want to delete ALL tasks? This cannot be undone.");
 
-        // 2. Wait for user response
         if (alert.showAndWait().get() == ButtonType.OK) {
-            // 3. Clear the list in memory
-            allTasks.clear();
-
-            // 4. Save the empty list to the file (overwriting the old data)
-            saveTasks();
-
-            // The TableView updates automatically because it is bound to allTasks
+            allTasks.clear(); // Clear in-memory list
+            saveTasks();      // Save empty list to file
         }
     }
 
-    private void saveTasks() {
-        try (Writer writer = new FileWriter(FILE_PATH)) {
-            new GsonBuilder().setPrettyPrinting().create().toJson(allTasks, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    // Save tasks to JSON
+
+    private void saveTasks() throws IOException {
+        Writer writer = new FileWriter(FILE_PATH);
+        new GsonBuilder().setPrettyPrinting().create().toJson(allTasks, writer); // Convert list to JSON
+        writer.close();
     }
 
-    private List<ToDo> loadCurrentTasks() {
+
+    // Load tasks from JSON
+
+    private List<ToDo> loadCurrentTasks() throws IOException {
         File file = new File(FILE_PATH);
-        if (!file.exists()) return new ArrayList<>();
+        if (!file.exists()) return new ArrayList<>(); // Return empty list if file not found
 
-        try (Reader reader = new FileReader(file)) {
-            List<ToDo> results = new Gson().fromJson(reader, new TypeToken<List<ToDo>>(){}.getType());
-            return results == null ? new ArrayList<>() : results;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+        Reader reader = new FileReader(file);
+        List<ToDo> results = new Gson().fromJson(reader, new TypeToken<List<ToDo>>(){}.getType());
+        reader.close();
+
+        return results == null ? new ArrayList<>() : results;
     }
 }
