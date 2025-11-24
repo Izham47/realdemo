@@ -58,7 +58,7 @@ public class NewTaskController {
         Stage stage = (Stage) buttonSave.getScene().getWindow();
         stage.close();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("myGUI.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("myGUI.fxml")); // open home scrreen back after add a new task
         Scene scene = new Scene(fxmlLoader.load(), 1500, 900);
         stage.setTitle("To DO List!");
         stage.setScene(scene);
@@ -74,10 +74,10 @@ public class NewTaskController {
             // Read JSON file into a List of ToDo objects
             List<ToDo> results = new Gson().fromJson(reader, new TypeToken<List<ToDo>>(){}.getType());
 
-            // SAFETY CHECK: If the file was empty, Gson returns null.
-            // We must return a new ArrayList instead of null.
+
+
             if (results == null) {
-                return new ArrayList<>();
+                return new ArrayList<>(); //If the file was empty, Gson returns empty list.
             }
 
             return results;

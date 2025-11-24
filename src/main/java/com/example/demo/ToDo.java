@@ -10,18 +10,26 @@ public class ToDo {
     private String dueDate;
     private String category;
     private Integer priority;
+    private Boolean completed;
 
     public String getTitle() {
+
         return title;
     }
+
     public String getDescription() {
         return description;
     }
     public String getDueDate() {
         return dueDate;
     }
-    public String getCategory() { return category; }
-    public Integer getPriority() { return priority; }
+    public String getCategory() {
+        return category; }
+
+    public Integer getPriority() {
+        return priority; }
+    public Boolean getCompleted() {
+        return completed; }
 
 
 
@@ -32,7 +40,16 @@ public class ToDo {
         this.dueDate = (dueDate != null) ? dueDate.toString() : "";;
         this.category = category;
         this.priority = priority;
+        this.completed = false;
 
+    }
+
+    public Boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
 
 
