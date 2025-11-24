@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.NewTaskController">
+    <children>
+        <Label layoutX="203.0" layoutY="24.0" prefHeight="49.0" prefWidth="325.0" text="ADD NEW TASK">
+            <font>
+                <Font name="System Bold Italic" size="33.0" />
+            </font>
+        </Label>
+        <Label layoutX="113.0" layoutY="105.0" text="TITLE:" />
+        <Label layoutX="90.0" layoutY="173.0" text="DESCRIPTION:" />
+        <Label layoutX="100.0" layoutY="243.0" text="DUE DATE:" />
+        <Label layoutX="98.0" layoutY="315.0" text="CATEGORY:" />
+        <Label layoutX="102.0" layoutY="387.0" text="PRIORITY:" />
+
+        <TextField fx:id="newtitlefield" layoutX="203.0" layoutY="101.0" prefHeight="25.0" prefWidth="174.0" />
+        <TextField fx:id="newdescriptionfield" layoutX="203.0" layoutY="169.0" prefHeight="25.0" prefWidth="174.0" />
+        <DatePicker fx:id="duedatee" layoutX="203.0" layoutY="239.0" />
+        <ComboBox fx:id="categoryy" layoutX="202.0" layoutY="311.0" prefHeight="25.0" prefWidth="174.0" />
+        <ComboBox fx:id="priorityy" layoutX="202.0" layoutY="383.0" prefHeight="25.0" prefWidth="180.0" />
+
+        <Button fx:id="buttonSave" onAction="#buttonSave" layoutX="610.0" layoutY="448.0" mnemonicParsing="false" style="-fx-background-color: lightblue;" text="ADD"> <font>
+            <Font size="15.0" />
+        </font>
+        </Button>
+    </children>
+</Pane>
