@@ -135,6 +135,7 @@ public class ViewTaskController {
 }
 
 
+
     // ⭐ 3. FIXED: Removed createGson() and used standard GsonBuilder
     private void saveTasks() {
         try (Writer writer = new FileWriter(FILE_PATH)) {

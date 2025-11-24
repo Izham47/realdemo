@@ -96,7 +96,6 @@ public class EditTaskController {
             mainStage.show();
         } catch (IOException error) {
             error.printStackTrace();
+ }
 }
 }
-}
-
